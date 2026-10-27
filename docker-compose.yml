@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orders
+      POSTGRES_PASSWORD: orders
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orders -d orders"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/orders
+      DB_USERNAME: orders
+      DB_PASSWORD: orders
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: change-me-please
+      # Demo key only. Generate your own with: openssl rand -base64 32
+      JWT_SECRET: ZGVtby1zZWNyZXQta2V5LWZvci1kb2NrZXItY29tcG9zZS1vbmx5ISE=
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
