@@ -71,7 +71,11 @@ PENDING → PAID → SHIPPED → DELIVERED
 | POST | `/api/v1/orders/{id}/cancel` | Owner or admin | Cancel and restock |
 | PATCH | `/api/v1/orders/{id}/status` | Admin | Move through the lifecycle |
 
-### Try it with curl
+### Try it
+
+The fastest way is [`requests.http`](requests.http): open it in IntelliJ IDEA or VS Code (REST Client) and run the requests top to bottom. Tokens are captured automatically.
+
+Or with curl:
 
 ```bash
 # 1. Register and keep the token
