@@ -7,7 +7,7 @@ COPY src ./src
 RUN mvn -B -q package -DskipTests
 
 # --- Runtime stage -----------------------------------------------------------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 WORKDIR /app
 RUN useradd --system --uid 1001 appuser
 COPY --from=build /app/target/orders-api-*.jar app.jar
