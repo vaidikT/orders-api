@@ -1,21 +1,28 @@
 version: 2
 updates:
+  # Libraries: only minor and patch updates. Major upgrades (e.g. Spring Boot 4) are planned manually.
   - package-ecosystem: maven
     directory: "/"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      spring:
-        patterns:
-          - "org.springframework*"
+      minor-and-patch:
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: monthly
 
+  # Base images: stay on the Java 21 LTS line; only pick up patch rebuilds.
   - package-ecosystem: docker
     directory: "/"
     schedule:
       interval: monthly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
